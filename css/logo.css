@@ -1,0 +1,60 @@
+.site-logo
+{
+	margin:0;
+	padding:0;
+	display: flex;
+	transform: translateZ(0);
+	justify-content: center;
+	align-items: center;
+}
+
+[id="logo"]
+{
+	position: relative;
+	flex: 0 0 3.75rem;
+	width: 3.75rem;
+	z-index: 2;
+}
+
+[id="logo"] polygon
+{
+	transform-origin: 50%;
+}
+
+
+[id="logo"] circle
+{
+	transform-origin: 80% 80%;
+}
+#logosvg
+{
+	transition: 0.8s;
+}
+
+.site-title
+{
+	position: relative;
+	overflow: hidden;
+	margin-left: -1.5rem;
+	z-index: 1;
+	transform: translateZ(0);
+}
+.site-title-text
+{
+	padding: 0.25rem 0.375rem 0.25rem 1.75rem;
+	color: #3F3C3C;
+	font-size: 2rem;
+	font-weight: 100;
+}
+#logo-text
+{
+	padding: 0.25rem 0.375rem 0.25rem 1.75rem;
+	color: #3F3C3C;
+	font-size: 2rem;
+	font-weight: 100;
+}
+#logo-text span
+{
+	margin-left: 0.01563rem;
+	color: #00B4FF;
+}
