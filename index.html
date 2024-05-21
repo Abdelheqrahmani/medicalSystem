@@ -26,7 +26,7 @@
         <a href="#services">services</a>
         <a href="#about">about</a>
         <a href="#review">review</a>
-        <a id="login-btn"  href="login.php">login</a>
+        <a id="popupButton2"  href="#popup2">login</a>
     </nav>
 
     <div id="menu-btn" class="fas fa-bars"></div>
@@ -269,16 +269,45 @@
 
 <div id="popupWindow" class="popup">
     <div class="popup-content">
+        <span id="closeButton" class="close">&times;</span>
         <h1>sign up  : </h1>
+
     <a href="signupDoctor.php" class="choose-btn" href="signupDoctor.php">
     <i class="fas fa-user-md"></i>
     <h2>doctor</h2>
-  
     </a>
-<a class="btn" href="signupDoctor.php">pharmacie</a>
-<a class="btn" href="signupDoctor.php">patient </a>
-<a class="btn" href="signupDoctor.php">labo</a>
+
+    <a href="signupPatient.php" class="choose-btn">
+          <i class="fas fa-users"></i>
+    <h2>patient</h2>
+    </a>
+
     </div>
+  
+</div>
+
+
+<!-- login window pop up choose -->
+<div id="popupWindow2" class="popup">
+    <div class="popup-content">
+        <span id="closeButton2" class="close">&times;</span>
+        <h1>login  : </h1>
+
+    <a href="signupDoctor.php" class="choose-btn" href="signupDoctor.php">
+    <i class="fas fa-user-md"></i>
+    <h2>doctor</h2>
+    </a>
+
+    <a href="signupPatient.php" class="choose-btn">
+          <i class="fas fa-users"></i>
+    <h2>patient</h2>
+    </a>
+
+    </div>
+  
+</div>
+
+  
 </div>
 
 
