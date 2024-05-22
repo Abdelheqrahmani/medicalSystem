@@ -5,7 +5,7 @@
 	include("connect.php");
 	$index=2;
 ?>
-<?php	//Update etat to 0
+<?php	//U
 	if( isset($_GET['id_ord_0']))
 	{
 		$modif = $bdd->exec("UPDATE `ordonnance` SET `ETAT`= '0' WHERE `ID_ORDONNANCE` = '".$_GET['id_ord_0']."'");
