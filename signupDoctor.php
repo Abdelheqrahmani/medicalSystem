@@ -21,7 +21,7 @@ if (isset($_POST['add_medecin'])) {
             'specialty' => $_POST['specialite'],
             'phone' => $_POST['number'],
             'email' => $_POST['email'],
-            'password' => ^$_POST['password']
+            'password' => $_POST['password']
         ]);
 
         if ($register) {

@@ -6,7 +6,7 @@
 		$_POST['password']=str_replace("'","\'",$_POST['password']);
 		if($_POST['categorie']=="medecin")
 		{
-			$reponse = $bdd->query("SELECT * FROM `medecin` where `MAIL` = '".$_POST['mail']	."' AND `PASS` = '".$_POST['password']."'");
+			$reponse = $bdd->query("SELECT * FROM `medcin` where `Email` = '".$_POST['mail']	."' AND `Password` = '".$_POST['password']."'");
 			$row = $reponse->fetch();
 			if(!$row)
 			{ $sms=1;}
@@ -82,7 +82,6 @@
 						  <?php if($sms==1){echo'<div style="color:red;text-align:center"> E-mail ou mot de passe  incorrecte !!</div>';} ?>
 						</form>
 					</div>
-					<p style="text-align:right;padding-right:10px">Copyright ® DEV By: ZANE<p/>
 				  </div>
 				</div>
 			  </div>
