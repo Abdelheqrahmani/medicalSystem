@@ -11,7 +11,7 @@
 			if(!$row)
 			{ $sms=1;}
 			else
-			{$_SESSION['categorie']=$_POST['categorie'];$_SESSION['id']=$row['ID_MEDECIN'];header('Location: liste.php ');}
+			{$_SESSION['categorie']=$_POST['categorie'];$_SESSION['id']=$row['MedcinID'];header('Location: medcinPage.php ');}
 		}
 		else{
 			$reponse = $bdd->query("SELECT * FROM `pharmacie` where `MAIL` = '".$_POST['mail']	."' AND `PASS` = '".$_POST['password']."'");
@@ -79,7 +79,7 @@
 							<input type="password" name="password" class="form-control" placeholder="***********">
 						  </div>
 						  <input name="Entrer" class="btn btn-block login-btn mb-4" type="submit" value="Entrer">
-						  <!-- <?php if($sms==1){echo'<div style="color:red;text-align:center"> E-mail ou mot de passe  incorrecte !!</div>';} ?> -->
+						  <?php if($sms==1){echo'<div style="color:red;text-align:center"> E-mail ou mot de passe  incorrecte !!</div>';} ?> 
 						</form>
 					</div>
 				  </div>

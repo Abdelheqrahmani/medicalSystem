@@ -14,3 +14,11 @@ body
 	text-align: center;
 	background-color: rgba(0,0,0,0.3);
 }
+
+
+.search{
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+	align-items: center;
+}	
