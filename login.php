@@ -1,28 +1,43 @@
-<?php session_start();include("connect.php");?>
-<?php 
-	if( isset($_POST['Entrer']))
-	{
-		$_POST['mail']=str_replace("'","\'",$_POST['mail']);
-		$_POST['password']=str_replace("'","\'",$_POST['password']);
-		if($_POST['categorie']=="medecin")
-		{
-			$reponse = $bdd->query("SELECT * FROM `medcin` where `Email` = '".$_POST['mail']	."' AND `Password` = '".$_POST['password']."'");
-			$row = $reponse->fetch();
-			if(!$row)
-			{ $sms=1;}
-			else
-			{$_SESSION['categorie']=$_POST['categorie'];$_SESSION['id']=$row['MedcinID'];header('Location: medcinPage.php ');}
-		}
-		else{
-			$reponse = $bdd->query("SELECT * FROM `pharmacie` where `MAIL` = '".$_POST['mail']	."' AND `PASS` = '".$_POST['password']."'");
-			$row = $reponse->fetch();
-			
-			if(!$row)
-			{ $sms=1;}
-			else
-			{$_SESSION['categorie']=$_POST['categorie'];$_SESSION['id']=$row['ID_PHARMACIE'];header('Location: liste.php');}
-		}
-	}
+<?php
+session_start();
+include("connect.php");
+
+$sms = 0; 
+
+if (isset($_POST['Entrer'])) {
+    // Sanitizing inputs
+    $email = str_replace("'", "\'", $_POST['mail']);
+    $password = str_replace("'", "\'", $_POST['password']);
+    $category = $_POST['categorie'];
+
+    if ($category == "medecin") {
+        $query = $bdd->prepare("SELECT * FROM medcin WHERE Email = :email AND Password = :password");
+        $query->execute(['email' => $email, 'password' => $password]);
+        $row = $query->fetch();
+
+        if (!$row) {
+            $sms = 1;
+        } else {
+            $_SESSION['categorie'] = $category;
+            $_SESSION['id'] = $row['MedcinID'];
+            header('Location: medcinPage.php');
+            exit();
+        }
+    } elseif ($category == "patient") {
+        $query = $bdd->prepare("SELECT * FROM patient WHERE Email = :email AND Password = :password");
+        $query->execute(['email' => $email, 'password' => $password]);
+        $row = $query->fetch();
+
+        if (!$row) {
+            $sms = 1;
+        } else {
+            $_SESSION['categorie'] = $category;
+            $_SESSION['id'] = $row['PatientID'];
+            header('Location: patientPage.php');
+            exit();
+        }
+    }
+}
 ?>
 <!doctype html>
 <html>
@@ -70,6 +85,7 @@
 								<option value="">- Categorie -</option>
 								<option value="medecin">Medecin</option>
 								<option value="pharmacie">Pharmacie</option>
+								<option value="patient">Patient</option>
 							</select>
 						  </div>
 						  <div class="form-group">

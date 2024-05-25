@@ -6,13 +6,13 @@
 	if(!isset($_SESSION['id']) )
 	{ header('Location:index.html');}
 	
-	include("connect.php");
+
 
 	include("connect.php"); // Include the file that contains the database connection code
 
 	$reponse = $bdd->query("SELECT * FROM `medcin` where `MedcinID` = '".$_SESSION['id']."'"); // Execute the SQL query
 	$row = $reponse->fetch(); // Fetch the result from the query
-
+	$sms=0;
 	if(!$row)
 			{ $sms=1;}
 			else {
@@ -20,14 +20,28 @@
 			
 		}
 
-		if( isset($_POST['Entrer']))
-		{
+
+		/// search for patient 
+
+		if (isset($_POST['submit'])) {
+			// Initialize the database connection ($bdd) properly here.
+			
+			$reponse = $bdd->query("SELECT * FROM `patient` WHERE `PatientID` = '" . $_POST['idPatient'] . "'"); // Execute the SQL query
+			$row = $reponse->fetch(); // Fetch the result from the query
+			
+			if ($row) {
+				// Redirect to test.html if the row exists
+				header("Location: test.html");
+				exit(); // Make sure to call exit after header redirection
+			} else {
+				echo "Patient not found.";
+			}
+		}
 		
-				$reponse = $bdd->query("SELECT * FROM `patient` where `PatientID` = '".$_POST['idPatient']."'");
-				$row = $reponse->fetch();
-				header('Location: test.html ');}
 		
 	?>
+
+
 
 <!doctype html>
 <html>
@@ -74,9 +88,11 @@
 
 	<form name='login' class="formIdPatient" action="" method="post" style="margin: 0 auto;">
 						
-<label for="idPatient"></label>
+<label for="idPatient">!</label>
 	<input type="number" name="idPatient" id="idPatient"  class="id" placeholder="Entrez l id de patient ">
-	<input type="submit" class="search">
+	<input type="submit" class="search" name="submit">
+	<?php if($sms==1){echo'<div style="color:red;text-align:center"> E-mail ou mot de passe  incorrecte !!</div>';} ?> 
+
 	</form>
 	
 
