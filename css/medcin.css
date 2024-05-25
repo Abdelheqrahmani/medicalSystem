@@ -8,6 +8,7 @@ padding: 0px;
     height: 100vh;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -30,10 +31,6 @@ padding: 0px;
     margin: 20px;
 
  
-}
-h1{
-    color: #333;
-    margin: 40px;
 }
 .form-group{
     width: 100%;
@@ -107,3 +104,44 @@ input::-webkit-inner-spin-button {
 .doctorName{
   margin-top: 100px;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 25px 0;
+  font-size: 18px;
+  text-align: left;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
