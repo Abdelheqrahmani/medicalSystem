@@ -5,10 +5,10 @@ if(!isset($_SESSION['id'])) {
     exit;
 }
 
-include("connect.php"); // Include the file that contains the database connection
+include("connect.php"); 
 
-$reponse = $bdd->query("SELECT * FROM `patient` WHERE `PatientID` = '".$_SESSION['id']."'"); // Execute the SQL query
-$row = $reponse->fetch(); // Fetch the result from the query
+$reponse = $bdd->query("SELECT * FROM `patient` WHERE `PatientID` = '".$_SESSION['id']."'"); 
+$row = $reponse->fetch(); 
 $sms = 0;
 if(!$row) {
     $sms = 1;
@@ -17,8 +17,19 @@ if(!$row) {
 	$idPatient = $row['PatientID'];
 }
 
-$ordonnanceQuery = $bdd->query("SELECT * FROM `ordonnance` WHERE `PatientID` = '".$_SESSION['id']."'");
-$ordonnances = $ordonnanceQuery->fetchAll();
+$ordonnanceQuery = $bdd->query("SELECT * FROM
+ `ordonnancemedicament` 
+ JOIN `ordonnance` WHERE `ordonnancemedicament`.`OrdonnanceID` = `ordonnance`.`OrdonnanceID`
+  AND `ordonnance`.
+`PatientID` = '".$_SESSION['id']."'");
+$ordonnance1 = $ordonnanceQuery->fetchAll();
+
+$ordonnanceQuery = $bdd->query("SELECT * FROM
+ `analyses` 
+ JOIN `ordonnance` WHERE `analyses`.`OrdonnanceID` = `ordonnance`.`OrdonnanceID`
+  AND `ordonnance`.
+`PatientID` = '".$_SESSION['id']."'");
+$ordonnance2 = $ordonnanceQuery->fetchAll();
 
 
 
@@ -72,19 +83,19 @@ $ordonnances = $ordonnanceQuery->fetchAll();
         </thead>
         <tbody>
             <?php 
-            foreach ($ordonnances as $ordonnance) {
-				$idMedcin = $ordonnance['MedcinID'];
+            foreach ($ordonnance1 as $ordonnance1) {
+				$idMedcin = $ordonnance1['MedcinID'];
 				$medcinQuery = $bdd->query("SELECT * FROM `medcin` WHERE `MedcinID` = '".$idMedcin."'");
 				$medcin = $medcinQuery->fetch();
 
                 echo "<tr>";
-                echo "<td>" . $ordonnance['OrdonnanceID'] . "</td>";
+                echo "<td>" . $ordonnance1['OrdonnanceID'] . "</td>";
                
                 echo "<td>" .  $medcin['Name'] . "</td>"; 
-				echo "<td>" . $ordonnance['PatientID'] . "</td>";
-                echo "<td>" . $ordonnance['Date'] . "</td>";
-                echo "<td>" . $ordonnance['Type'] . "</td>";
-				echo "<td> <a href='ordPatient.php?id=" . $ordonnance['OrdonnanceID'] . "' class='btn'>sqdqsd</a>  </td>";
+				echo "<td>" . $ordonnance1['PatientID'] . "</td>";
+                echo "<td>" . $ordonnance1['Date'] . "</td>";
+                echo "<td>" . $ordonnance1['Type'] . "</td>";
+				echo "<td> <a href='ordPatient.php?id=" . $ordonnance1['OrdonnanceID'] . "' class='btn'>sqdqsd</a>  </td>";
 
                 echo "</tr>";
             }
@@ -103,6 +114,23 @@ $ordonnances = $ordonnanceQuery->fetchAll();
             </tr>
         </thead>
         <tbody>
+        <?php 
+            foreach ($ordonnance2 as $ordonnance2) {
+				$idMedcinA = $ordonnance2['MedcinID'];
+				$medcinQueryA = $bdd->query("SELECT * FROM `medcin` WHERE `MedcinID` = '".$idMedcin."'");
+				$medcinA = $medcinQuery->fetch();
+                echo "<tr>";
+                echo "<td>" . $ordonnance2['OrdonnanceID'] . "</td>";
+               
+                echo "<td>" .  $medcin['Name'] . "</td>"; 
+				echo "<td>" . $ordonnance2['PatientID'] . "</td>";
+                echo "<td>" . $ordonnance2['Date'] . "</td>";
+                echo "<td>" . $ordonnance2['Type'] . "</td>";
+				echo "<td> <a href='anlPatient.php?id=" . $ordonnance2['OrdonnanceID'] . "' class='btn'>sqdqsd</a>  </td>";
+
+                echo "</tr>";
+            }
+            ?>
         </tbody>
     </table>
 </div>
