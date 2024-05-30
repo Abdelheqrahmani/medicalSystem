@@ -19,7 +19,8 @@
 
 <header class="header">
 
-    <a href="#" class="logo"> <i class="fas fa-heartbeat"></i> medcare </a>
+    <a href="#" class="logo"> <i class="fa fa-medkit rot" aria-hidden="true"></i>
+        medcare </a>
 
     <nav class="navbar">
         <a href="#home">home</a>
@@ -302,7 +303,17 @@
 
 
 <!-- custom js file link  -->
-<script src="js/script.js"></script>
+<script src="js/script.js"></script> 
+<script src="js/gsap.min.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded" , (event) => {
+ gsap.to('.rot', {
+        rotation : 360 , 
+        duration : 2 , 
 
+    });
+}) ; 
+   
+    </script>
 </body>
 </html>
