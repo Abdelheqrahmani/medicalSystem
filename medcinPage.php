@@ -46,7 +46,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>MA LISTE</title>
+		<title>Page medcin </title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="css/Bootstrap.css">
@@ -67,7 +67,7 @@
 <a href="#" class="logo"> <i class="fas fa-heartbeat"></i> medcare </a>
 
 <nav class="navbar">
-	<a href="#home">Account Information</a>
+	<a href="MedcinProfile.php">Account Information</a>
 	<a href="deconnexion.php"> log out 
 		<i class="fas fa-sign-out-alt"></i>
 	</a>
