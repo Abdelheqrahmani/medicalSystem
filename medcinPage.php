@@ -31,7 +31,7 @@
 			
 			if ($row) {
 				// Redirect to test.html if the row exists
-				header("Location: test.html");
+				header("Location: MedcinPatPage.php?id=" . $_POST['idPatient']);
 				exit(); // Make sure to call exit after header redirection
 			} else {
 				echo "Patient not found.";

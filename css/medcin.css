@@ -145,3 +145,8 @@ table {
   color: #009879;
 }
 
+.add-btn{
+  background-color:#007A69 ;
+  color : white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}

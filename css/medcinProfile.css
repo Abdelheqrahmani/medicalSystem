@@ -1,30 +1,87 @@
-.header{
-    padding:2rem 9%;
-    position: fixed;
-    top:0; left: 0; right: 0;
-    z-index: 1000;
-    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
+.profile {
+    width: 80%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.header .logo{
-    font-size: 2.5rem;
-    color: var(--black);
+.profile .img {
+    text-align: center;
 }
 
-.header .logo i{
-    color: var(--green);
+.profile .img i {
+    font-size: 50px;
+    color: #777;
 }
 
-.header .navbar a{
-    font-size: 1.8rem;
-    color: var(--light-color);
-    margin-left: 2rem;
+.profile .img h1 {
+    margin-top: 10px;
 }
 
-.header .navbar a:hover{
-    color: var(--green);
+.profile .info, .profile .description, .profile .contact {
+    margin-top: 20px;
+}
+
+.profile .info h1, .profile .description h1, .profile .contact h1 {
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.profile .info p, .profile .description p, .profile .contact p {
+    color: #777;
+    line-height: 1.6;
+}
+
+.profile .contact a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.profile .contact a:hover {
+    text-decoration: underline;
+}.profile {
+    width: 80%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.profile .img {
+    text-align: center;
+}
+
+.profile .img i {
+    font-size: 50px;
+    color: #777;
+}
+
+.profile .img h1 {
+    margin-top: 10px;
+}
+
+.profile .info, .profile .description, .profile .contact {
+    margin-top: 20px;
+}
+
+.profile .info h1, .profile .description h1, .profile .contact h1 {
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.profile .info p, .profile .description p, .profile .contact p {
+    color: #777;
+    line-height: 1.6;
+}
+
+.profile .contact a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.profile .contact a:hover {
+    text-decoration: underline;
 }
