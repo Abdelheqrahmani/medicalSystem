@@ -147,7 +147,7 @@ $ordonnance2 = $ordonnanceQuery->fetchAll();
         <h1>que voulez vous ajouter : </h1>
         <span id="closeButton" class="close">&times;</span>
 <a class="btn" href='AddOrd.php?patientID=<?php echo $idPatient; ?>'>ordannance</a>
-        <a class="btn" href='AddAnalyses.php?id=<?php echo $idPatient; ?>'> Analayses</a>
+        <a class="btn" href='AddAnl.php?patientID=<?php echo $idPatient; ?>'> Analayses</a>
 		<a class="btn" id="analyses"> Rapport medical </a>
 
     </div>

@@ -2,20 +2,31 @@
 margin: 0;
 padding: 0px;
 }
+body{
+    margin: 0;
+ 
+    font-family: Arial, sans-serif;
+    background-color: rgb(241, 241, 241);
+    width: 100%;
+    height: auto;
+}
 
 .content{
-
-    height: 100vh;
+    
+    height: auto;
     width: 100%;
     display: flex;
+    position: relative;
+    top:20vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column; 
     background-color: #f1f1f1;
 
 
 }
+
 
 .searchPatient {
     width: 800px;
