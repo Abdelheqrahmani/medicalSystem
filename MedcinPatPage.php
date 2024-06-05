@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 if(!isset($_SESSION['id'])) { 
     header('Location:index.html');
@@ -22,19 +22,30 @@ if(isset($_GET['id'])) {
     $idPatient = $_GET['id'];
 }
 
-$ordonnanceQuery = $bdd->query("SELECT * FROM
- `ordonnancemedicament` 
- JOIN `ordonnance` WHERE `ordonnancemedicament`.`OrdonnanceID` = `ordonnance`.`OrdonnanceID`
-  AND `ordonnance`.
-`PatientID` = '".$idPatient."'");
-$ordonnance1 = $ordonnanceQuery->fetchAll();
+// Fetch distinct ordonnances with their medicaments
+$ordonnanceQuery = $bdd->query("SELECT DISTINCT `ordonnance`.*, `medcin`.`Name` AS MedcinName, `medcin`.`Specialty` 
+FROM `ordonnance`
+JOIN `ordonnancemedicament` ON `ordonnance`.`OrdonnanceID` = `ordonnancemedicament`.`OrdonnanceID`
+JOIN `medcin` ON `ordonnance`.`MedcinID` = `medcin`.`MedcinID`
+WHERE `ordonnance`.`PatientID` = '".$idPatient."'");
 
-$ordonnanceQuery = $bdd->query("SELECT * FROM
- `analyses` 
- JOIN `ordonnance` WHERE `analyses`.`OrdonnanceID` = `ordonnance`.`OrdonnanceID`
-  AND `ordonnance`.
-`PatientID` = '".$idPatient."'");
-$ordonnance2 = $ordonnanceQuery->fetchAll();
+$ordonnances = $ordonnanceQuery->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch distinct ordonnances with their analyses
+$analysisQuery = $bdd->query("SELECT DISTINCT `ordonnance`.*, `medcin`.`Name` AS MedcinName, `medcin`.`Specialty` 
+FROM `ordonnance`
+JOIN `analyses` ON `ordonnance`.`OrdonnanceID` = `analyses`.`OrdonnanceID`
+JOIN `medcin` ON `ordonnance`.`MedcinID` = `medcin`.`MedcinID`
+WHERE `ordonnance`.`PatientID` = '".$idPatient."'");
+$analyses = $analysisQuery->fetchAll(PDO::FETCH_ASSOC);
+
+
+$rapportQuery = $bdd->query("SELECT DISTINCT `ordonnance`.*, `medcin`.`Name` AS MedcinName, `medcin`.`Specialty` 
+FROM `ordonnance`
+JOIN `rapport` ON `ordonnance`.`OrdonnanceID` = `rapport`.`OrdonnanceID`
+JOIN `medcin` ON `ordonnance`.`MedcinID` = `medcin`.`MedcinID`
+WHERE `ordonnance`.`PatientID` = '".$idPatient."'");
+$rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -64,94 +75,98 @@ $ordonnance2 = $ordonnanceQuery->fetchAll();
 </header>
 
 <div class="content">
-	
-   
-    <h1 class="doctorName"> <?php echo "numero de patient  ".$idPatient." "; ?></h1>
-    <h2>Ajoutez quelque chose : </h2>
+    <h1 class="doctorName"><?php echo "numero de patient " . $idPatient; ?></h1>
+    <h2>Ajoutez quelque chose :</h2>
     
-    <div class="btn add-btn" id="popupButton"  >Ajoutez <i class="fa fa-plus-circle"></i></div>
+    <div class="btn add-btn" id="popupButton">Ajoutez <i class="fa fa-plus-circle"></i></div>
     <h1>ordonnances</h1>
-	<div class="switch">
-		<div class="btn" id="ordannaces"> ordannance </div>
-		<div class="btn" id="analyses"> Analayses</div>
-		<div class="btn" id="analyses"> Rapport medical </div>
-	</div>
-    <table class="styled-table" id="table-ord" >
+    <div class="switch">
+        <div class="btn" id="ordannaces"> ordannance </div>
+        <div class="btn" id="analyses"> Analyses</div>
+        <div class="btn" id="rapmed"> Rapport medical </div>
+    </div>
+    <table class="styled-table" id="table-ord">
         <thead>
             <tr>
                 <th>Numero d'ordannance</th>
-                <th>Nom de medcin </th>
-                <th>Specialite de medcin </th>
+                <th>Nom de medcin</th>
+                <th>Specialite de medcin</th>
                 <th>Date</th>
-                <th>Type d'ordannance </th>
-				<th>  voir les details</th>
-			
+                <th>Type d'ordannance</th>
+                <th>voir les details</th>
             </tr>
         </thead>
         <tbody>
-            <?php 
-            foreach ($ordonnance1 as $ordonnance1) {
-				$idMedcin = $ordonnance1['MedcinID'];
-				$medcinQuery = $bdd->query("SELECT * FROM `medcin` WHERE `MedcinID` = '".$idMedcin."'");
-				$medcin = $medcinQuery->fetch();
-
-                echo "<tr>";
-                echo "<td>" . $ordonnance1['OrdonnanceID'] . "</td>";
-               
-                echo "<td>" .  $medcin['Name'] . "</td>"; 
-				echo "<td>" . $ordonnance1['PatientID'] . "</td>";
-                echo "<td>" . $ordonnance1['Date'] . "</td>";
-                echo "<td>" . $ordonnance1['Type'] . "</td>";
-				echo "<td> <a href='ordPatient.php?id=" . $ordonnance1['OrdonnanceID'] . "' class='btn'>sqdqsd</a>  </td>";
-
-                echo "</tr>";
-            }
-            ?>
+            <?php foreach ($ordonnances as $ordonnance): ?>
+                <tr>
+                    <td><?php echo $ordonnance['OrdonnanceID']; ?></td>
+                    <td><?php echo $ordonnance['MedcinName']; ?></td>
+                    <td><?php echo $ordonnance['Specialty']; ?></td>
+                    <td><?php echo $ordonnance['Date']; ?></td>
+                    <td><?php echo $ordonnance['Type']; ?></td>
+                    <td><a href='ordPatient.php?id=<?php echo $ordonnance['OrdonnanceID']; ?>' class='btn'>Voir</a></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
-    <table class="styled-table" id="table-anl" style="display: none ; " >
+    <table class="styled-table" id="table-anl" style="display: none;">
         <thead>
             <tr>
                 <th>Numero des analyses</th>
-                <th>Nom de medcin </th>
-                <th>Specialite de medcin </th>
+                <th>Nom de medcin</th>
+                <th>Specialite de medcin</th>
                 <th>Date</th>
-                <th>Type d'ordannance </th>
-				<th>  voir les details</th>
+                <th>Type d'ordannance</th>
+                <th>voir les details</th>
             </tr>
         </thead>
         <tbody>
-        <?php 
-            foreach ($ordonnance2 as $ordonnance2) {
-				$idMedcinA = $ordonnance2['MedcinID'];
-				$medcinQueryA = $bdd->query("SELECT * FROM `medcin` WHERE `MedcinID` = '".$idMedcin."'");
-				$medcinA = $medcinQuery->fetch();
-                echo "<tr>";
-                echo "<td>" . $ordonnance2['OrdonnanceID'] . "</td>";
-               
-                echo "<td>" .  $medcin['Name'] . "</td>"; 
-				echo "<td>" . $ordonnance2['PatientID'] . "</td>";
-                echo "<td>" . $ordonnance2['Date'] . "</td>";
-                echo "<td>" . $ordonnance2['Type'] . "</td>";
-				echo "<td> <a href='anlPatient.php?id=" . $ordonnance2['OrdonnanceID'] . "' class='btn'>sqdqsd</a>  </td>";
-
-                echo "</tr>";
-            }
-            ?>
+            <?php foreach ($analyses as $analysis): ?>
+                <tr>
+                    <td><?php echo $analysis['OrdonnanceID']; ?></td>
+                    <td><?php echo $analysis['MedcinName']; ?></td>
+                    <td><?php echo $analysis['Specialty']; ?></td>
+                    <td><?php echo $analysis['Date']; ?></td>
+                    <td><?php echo $analysis['Type']; ?></td>
+                    <td><a href='anlPatient.php?id=<?php echo $analysis['OrdonnanceID']; ?>' class='btn'>Voir</a></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
+    <table class="styled-table" id="table-rapp">
+    <thead>
+        <tr>
+            <th>Numero de rapport</th>
+            <th>Nom de medcin</th>
+            <th>Specialite de medcin</th>
+            <th>Date</th>
+            <th>Type d'ordonnance</th>
+            <th>Voir les détails</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rapports as $rapport): ?>
+            <tr>
+                <td><?php echo $rapport['OrdonnanceID']; ?></td>
+                <td><?php echo $rapport['MedcinName']; ?></td>
+                <td><?php echo $rapport['Specialty']; ?></td>
+                <td><?php echo $rapport['Date']; ?></td>
+                <td><?php echo $rapport['Type']; ?></td>
+                <td><a href='rappPatient.php?id=<?php echo $rapport['OrdonnanceID']; ?>' class='btn'>Voir</a></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 </div>
 
 <div id="popupWindow" class="popup">
     <div class="popup-content">
-        <h1>que voulez vous ajouter : </h1>
+        <h1>Que voulez-vous ajouter :</h1>
         <span id="closeButton" class="close">&times;</span>
-<a class="btn" href='AddOrd.php?patientID=<?php echo $idPatient; ?>'>ordannance</a>
-        <a class="btn" href='AddAnl.php?patientID=<?php echo $idPatient; ?>'> Analayses</a>
-		<a class="btn" id="analyses"> Rapport medical </a>
-
+        <a class="btn" href='AddOrd.php?patientID=<?php echo $idPatient; ?>'>Ordannance</a>
+        <a class="btn" href='AddAnl.php?patientID=<?php echo $idPatient; ?>'>Analyses</a>
+        <a class="btn" id="analyses" href='AddRapp.php?patientID=<?php echo $idPatient; ?>' >Rapport medical</a>
     </div>
-  
 </div>
 
 <script src="js/patient.js"></script>

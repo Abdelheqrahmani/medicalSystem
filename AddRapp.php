@@ -37,7 +37,9 @@ if ($patientID) {
     } else {
         echo "Insert failed!";
     }
-}   
+}
+
+// Handle form submission for analyses
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ordonnanceID = $lastInsertedID;
     $typeAnalayses = $_POST['typeAnalayses'];
@@ -66,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Insert failed: " . $e->getMessage());
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -74,39 +75,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Analayses</title>
+    <title>Add Analyses</title>
     <link rel="stylesheet" href="css/Bootstrap.css">
-		<link rel="stylesheet" href="css/font-awesome.min.css">
-		<link rel="stylesheet" href="css/index.css">
-
-		<link rel="stylesheet" href="css/logo.css">
-		<link rel="stylesheet" href="css/portail.css">
-		<link rel="stylesheet" href="css/addOrd.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/logo.css">
+    <link rel="stylesheet" href="css/portail.css">
+    <link rel="stylesheet" href="css/addOrd.css">
 </head>
 <body>
 <div class="content">
-    <h1>Add Medicament to Ordonnance #<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?></h1>
-    <form id="medicamentForm" method="POST">
-        <div id="medicaments">
-            <div class="medicament-entry">
-        
-                <label for="ExamenID">Examen ID:</label>
-                <input type="text" class="ExamenID" name="ExamenID" required>
-                
-                <label for="typeAnalayses">Type of Analayses:</label>
-                <input type="text" class="typeAnalayses" name="typeAnalayses" required>
-                
-                <label for="description">Description:</label>
-                <input type="text" class="description" name="description" maxlength="500">
-                
-                <br>
-                <button type="button" class="btn-delete btn" onclick="removeMedicament(this)">Delete</button>
-            </div>
+    <h1>Add Analysis to Ordonnance #<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?></h1>
+    <form id="analysesForm" method="POST">
+    <input type="hidden" name="OrdonnanceID" value="<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?>">
+    <div id="analyses">
+        <div class="analysis-entry">
+            <label for="typeAnalayses">Type of Analyses:</label>
+            <input type="text" class="typeAnalayses" name="typeAnalayses[]" required>
+            
+            <label for="description">Description:</label>
+            <input type="text" class="description" name="description[]" maxlength="500">
+            
+            <br>
+            <button type="button" class="btn-delete btn" onclick="removeAnalysis(this)">Delete</button>
         </div>
-        <button type="button" class="btn btn-add" onclick="addMedicament()">Add Analayses</button>
-        <button class="btn btn-sub" type="submit">Submit</button>
-    </form>
+    </div>
+    <button type="button" class="btn btn-add" onclick="addAnalysis()">Add Analysis</button>
+    <button class="btn btn-sub" type="submit">Submit</button>
+</form>
 
 </div>
+
+<script>
+function addAnalysis() {
+    const analysisDiv = document.createElement('div');
+    analysisDiv.classList.add('analysis-entry');
+    analysisDiv.innerHTML = `
+        <label for="typeAnalayses">Type of Analyses:</label>
+        <input type="text" class="typeAnalayses" name="typeAnalayses[]" required>
+        
+        <label for="description">Description:</label>
+        <input type="text" class="description" name="description[]" maxlength="500">
+        
+        <br>
+        <button type="button" class="btn-delete btn" onclick="removeAnalysis(this)">Delete</button>
+    `;
+    document.getElementById('analyses').appendChild(analysisDiv);
+}
+
+function removeAnalysis(button) {
+    button.parentElement.remove();
+}
+</script>
 </body>
 </html>
