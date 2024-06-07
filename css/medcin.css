@@ -161,3 +161,46 @@ table {
   color : white;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+/* Search Container */
+.search-container {
+  position: relative;
+  margin-right: 30px;
+}
+
+/* Search Input */
+#pharmacy-search {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 200px;
+  font-size: 16px;
+}
+
+/* Search Button */
+#search-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+#search-btn i {
+  color: #555;
+  font-size: 18px;
+}
+
+#search-btn:hover i {
+  color: #333;
+}

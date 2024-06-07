@@ -21,8 +21,9 @@ if ($patientID) {
 } else {
     echo "Patient ID is not provided.";
 }
+
 if ($patientID) {
-    // Prepare the insert query
+    // Prepare the insert query for ordonnance
     $insertQuery = $bdd->prepare("INSERT INTO ordonnance (PatientID, MedcinID, Date, Type) 
                                   VALUES (:patientID, :medcinID, NOW(), 'Type')");
 
@@ -31,6 +32,7 @@ if ($patientID) {
         'patientID' => $patientID,
         'medcinID' => $medcinID
     ]);
+
     if ($register) {
         $lastInsertedID = $bdd->lastInsertId();
         echo "Last inserted ID: $lastInsertedID";
@@ -39,30 +41,31 @@ if ($patientID) {
     }
 }
 
-// Handle form submission for analyses
+// Handle form submission for rapport
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ordonnanceID = $lastInsertedID;
-    $typeAnalayses = $_POST['typeAnalayses'];
-    $descriptions = $_POST['description'];
+    $rapportTitles = $_POST['rapportTitle'];
+    $rapportDescriptions = $_POST['rapportDescription'];
+    $rapportFiles = $_POST['rapportFile'];
 
     try {
         $bdd->beginTransaction();
 
-        // Prepare the insert query
-        $insertQuery = $bdd->prepare("INSERT INTO analyses (OrdonnanceID, typeAnalayses, description) 
-                                      VALUES (:ordonnanceID, :typeAnalayses, :description)");
+        // Insert rapport
+        $insertRapportQuery = $bdd->prepare("INSERT INTO rapport (OrdonnanceID, title, description, file) 
+                                             VALUES (:ordonnanceID, :title, :description, :file)");
 
-        // Loop through each analysis and execute the insert query
-        for ($i = 0; $i < count($typeAnalayses); $i++) {
-            $insertQuery->execute([
+        for ($i = 0; $i < count($rapportTitles); $i++) {
+            $insertRapportQuery->execute([
                 'ordonnanceID' => $ordonnanceID,
-                'typeAnalayses' => $typeAnalayses[$i],
-                'description' => $descriptions[$i]
+                'title' => $rapportTitles[$i],
+                'description' => $rapportDescriptions[$i],
+                'file' => $rapportFiles[$i]
             ]);
         }
 
         $bdd->commit();
-        echo "Analyses added successfully!";
+        echo "Rapports added successfully!";
     } catch (PDOException $e) {
         $bdd->rollBack();
         die("Insert failed: " . $e->getMessage());
@@ -75,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Analyses</title>
+    <title>Add Rapport</title>
     <link rel="stylesheet" href="css/Bootstrap.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/index.css">
@@ -85,45 +88,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 <div class="content">
-    <h1>Add Analysis to Ordonnance #<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?></h1>
-    <form id="analysesForm" method="POST">
-    <input type="hidden" name="OrdonnanceID" value="<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?>">
-    <div id="analyses">
-        <div class="analysis-entry">
-            <label for="typeAnalayses">Type of Analyses:</label>
-            <input type="text" class="typeAnalayses" name="typeAnalayses[]" required>
-            
-            <label for="description">Description:</label>
-            <input type="text" class="description" name="description[]" maxlength="500">
-            
-            <br>
-            <button type="button" class="btn-delete btn" onclick="removeAnalysis(this)">Delete</button>
-        </div>
-    </div>
-    <button type="button" class="btn btn-add" onclick="addAnalysis()">Add Analysis</button>
-    <button class="btn btn-sub" type="submit">Submit</button>
-</form>
+    <h1>Add Rapport to Ordonnance #<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?></h1>
+    <form id="rapportForm" method="POST">
+        <input type="hidden" name="OrdonnanceID" value="<?php echo isset($lastInsertedID) ? $lastInsertedID : ''; ?>">
+        
+        <div id="rapports">
+            <div class="rapport-entry">
+                <label for="rapportTitle">Title:</label>
+                <input type="text" class="rapportTitle" name="rapportTitle[]" required>
+                
+                <label for="rapportDescription">Description:</label>
+                <input type="text" class="rapportDescription" name="rapportDescription[]" maxlength="500">
 
+                <label for="rapportFile">File:</label>
+                <input type="text" class="rapportFile" name="rapportFile[]" required>
+                
+                <br>
+                <button type="button" class="btn-delete btn" onclick="removeRapport(this)">Delete</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-add" onclick="addRapport()">Add Rapport</button>
+
+        <button class="btn btn-sub" type="submit">Submit</button>
+    </form>
 </div>
 
 <script>
-function addAnalysis() {
-    const analysisDiv = document.createElement('div');
-    analysisDiv.classList.add('analysis-entry');
-    analysisDiv.innerHTML = `
-        <label for="typeAnalayses">Type of Analyses:</label>
-        <input type="text" class="typeAnalayses" name="typeAnalayses[]" required>
+function addRapport() {
+    const rapportDiv = document.createElement('div');
+    rapportDiv.classList.add('rapport-entry');
+    rapportDiv.innerHTML = `
+        <label for="rapportTitle">Title:</label>
+        <input type="text" class="rapportTitle" name="rapportTitle[]" required>
         
-        <label for="description">Description:</label>
-        <input type="text" class="description" name="description[]" maxlength="500">
+        <label for="rapportDescription">Description:</label>
+        <input type="text" class="rapportDescription" name="rapportDescription[]" maxlength="500">
+
+        <label for="rapportFile">File:</label>
+        <input type="text" class="rapportFile" name="rapportFile[]" required>
         
         <br>
-        <button type="button" class="btn-delete btn" onclick="removeAnalysis(this)">Delete</button>
+        <button type="button" class="btn-delete btn" onclick="removeRapport(this)">Delete</button>
     `;
-    document.getElementById('analyses').appendChild(analysisDiv);
+    document.getElementById('rapports').appendChild(rapportDiv);
 }
 
-function removeAnalysis(button) {
+function removeRapport(button) {
     button.parentElement.remove();
 }
 </script>

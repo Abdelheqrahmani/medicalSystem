@@ -40,32 +40,37 @@ if ($patientID) {
 }   
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ordonnanceID = $lastInsertedID;
-    $typeAnalayses = $_POST['typeAnalayses'];
-    $descriptions = $_POST['description'];
+    $typeAnalayses = isset($_POST['typeAnalayses']) ? (array)$_POST['typeAnalayses'] : [];
+    $descriptions = isset($_POST['description']) ? (array)$_POST['description'] : [];
 
-    try {
-        $bdd->beginTransaction();
+    if (count($typeAnalayses) && count($descriptions) && count($typeAnalayses) == count($descriptions)) {
+        try {
+            $bdd->beginTransaction();
 
-        // Prepare the insert query
-        $insertQuery = $bdd->prepare("INSERT INTO analyses (OrdonnanceID, typeAnalayses, description) 
-                                      VALUES (:ordonnanceID, :typeAnalayses, :description)");
+            // Prepare the insert query
+            $insertQuery = $bdd->prepare("INSERT INTO analyses (OrdonnanceID, typeAnalayses, description) 
+                                          VALUES (:ordonnanceID, :typeAnalayses, :description)");
 
-        // Loop through each analysis and execute the insert query
-        for ($i = 0; $i < count($typeAnalayses); $i++) {
-            $insertQuery->execute([
-                'ordonnanceID' => $ordonnanceID,
-                'typeAnalayses' => $typeAnalayses[$i],
-                'description' => $descriptions[$i]
-            ]);
+            // Loop through each analysis and execute the insert query
+            for ($i = 0; $i < count($typeAnalayses); $i++) {
+                $insertQuery->execute([
+                    'ordonnanceID' => $ordonnanceID,
+                    'typeAnalayses' => $typeAnalayses[$i],
+                    'description' => $descriptions[$i]
+                ]);
+            }
+
+            $bdd->commit();
+            echo "Analyses added successfully!";
+        } catch (PDOException $e) {
+            $bdd->rollBack();
+            die("Insert failed: " . $e->getMessage());
         }
-
-        $bdd->commit();
-        echo "Analyses added successfully!";
-    } catch (PDOException $e) {
-        $bdd->rollBack();
-        die("Insert failed: " . $e->getMessage());
+    } else {
+        echo "Mismatched input arrays!";
     }
 }
+
 
 ?>
 
@@ -90,8 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div id="medicaments">
             <div class="medicament-entry">
         
-                <label for="ExamenID">Examen ID:</label>
-                <input type="text" class="ExamenID" name="ExamenID" required>
                 
                 <label for="typeAnalayses">Type of Analayses:</label>
                 <input type="text" class="typeAnalayses" name="typeAnalayses" required>

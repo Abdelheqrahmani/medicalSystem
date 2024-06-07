@@ -40,11 +40,16 @@ WHERE `ordonnance`.`PatientID` = '".$idPatient."'");
 $analyses = $analysisQuery->fetchAll(PDO::FETCH_ASSOC);
 
 
-$rapportQuery = $bdd->query("SELECT DISTINCT `ordonnance`.*, `medcin`.`Name` AS MedcinName, `medcin`.`Specialty` 
-FROM `ordonnance`
-JOIN `rapport` ON `ordonnance`.`OrdonnanceID` = `rapport`.`OrdonnanceID`
-JOIN `medcin` ON `ordonnance`.`MedcinID` = `medcin`.`MedcinID`
-WHERE `ordonnance`.`PatientID` = '".$idPatient."'");
+
+$rapportQuery = $bdd->prepare("
+    SELECT DISTINCT ordonnance.*, medcin.Name AS MedcinName, medcin.Specialty, rapport.RapportID, rapport.title, rapport.description, rapport.file 
+    FROM ordonnance
+    JOIN rapport ON ordonnance.OrdonnanceID = rapport.OrdonnanceID
+    JOIN medcin ON ordonnance.MedcinID = medcin.MedcinID
+    WHERE ordonnance.PatientID = :idPatient
+");
+
+$rapportQuery->execute(['idPatient' => $idPatient]);
 $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -133,30 +138,43 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </tbody>
     </table>
-    <table class="styled-table" id="table-rapp">
+    <table class="styled-table" id="table-rapp" style="display: none;">
     <thead>
-        <tr>
-            <th>Numero de rapport</th>
-            <th>Nom de medcin</th>
-            <th>Specialite de medcin</th>
-            <th>Date</th>
-            <th>Type d'ordonnance</th>
-            <th>Voir les détails</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($rapports as $rapport): ?>
             <tr>
-                <td><?php echo $rapport['OrdonnanceID']; ?></td>
-                <td><?php echo $rapport['MedcinName']; ?></td>
-                <td><?php echo $rapport['Specialty']; ?></td>
-                <td><?php echo $rapport['Date']; ?></td>
-                <td><?php echo $rapport['Type']; ?></td>
-                <td><a href='rappPatient.php?id=<?php echo $rapport['OrdonnanceID']; ?>' class='btn'>Voir</a></td>
+                <th>Ordonnance ID</th>
+                <th>Medcin Name</th>
+                <th>Specialty</th>
+                <th>Rapport ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>File</th>
+                <th>Date</th>
+                <th>Type</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach ($rapports as $rapport): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($rapport['OrdonnanceID'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($rapport['MedcinName'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($rapport['Specialty'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($rapport['RapportID'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($rapport['title'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($rapport['description'] ?? ''); ?></td>
+                <td>
+                    <?php if (!empty($rapport['file'])): ?>
+                        <a href="path/to/your/uploads/<?php echo htmlspecialchars($rapport['file']); ?>" download>Download</a>
+                    <?php else: ?>
+                        No file
+                    <?php endif; ?>
+                </td>
+                <td><?php echo htmlspecialchars($rapport['Date'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($rapport['Type'] ?? ''); ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+   
 </div>
 
 <div id="popupWindow" class="popup">
