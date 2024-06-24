@@ -34,9 +34,9 @@
     </div>
     <div class="info">
         <h1>Information</h1>
-        <p> Nom: <span>Dr. kdha</span></p>
+        <p> Nom: <span>Dr. sss</span></p>
         <p> Specialite: <span>Cardiologue</span></p>
-        <p> Email: kdha@gmail.com  <span>
+        <p> Email: sss@gmail.com  <span>
         </div>
     <div class="description">
         <h1>Description</h1>

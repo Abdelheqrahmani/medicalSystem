@@ -469,7 +469,7 @@ section:nth-child(even){
     align-items: center;
     flex-direction: column;
     padding: .5rem;
-    
+    margin: 3px;
     border:var(--border);
     border-radius: .5rem;
     box-shadow: var(--box-shadow);

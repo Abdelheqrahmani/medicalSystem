@@ -51,7 +51,7 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
 <!doctype html>
 <html>
 <head>
-    <title>MA LISTE</title>
+    <title>Patient page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/Bootstrap.css">
@@ -65,7 +65,7 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <header class="header">
-    <a href="#" class="logo"><i class="fas fa-heartbeat"></i>med system</a>
+    <a href="#" class="logo"><i class="fas fa-heartbeat"></i>Sihati Tadj</a>
     <nav class="navbar">
     <div class="search-container">
         <form action="search.php" method="POST">

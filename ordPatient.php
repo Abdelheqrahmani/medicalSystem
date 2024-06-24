@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
 </head>
 <body>
     <header class="header">
-        <a href="#" class="logo"> <i class="fas fa-heartbeat"></i> med system </a>
+        <a href="#" class="logo"> <i class="fas fa-heartbeat"></i>Sihati Tadj </a>
         <nav class="navbar">
             <a href="#home">Account Information</a>
             <a href="#home">Ordannances</a>

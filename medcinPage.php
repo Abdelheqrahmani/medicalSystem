@@ -64,7 +64,7 @@
 		
 <header class="header">
 
-<a href="#" class="logo"> <i class="fas fa-heartbeat"></i> medcare </a>
+<a href="#" class="logo"> <i class="fas fa-heartbeat"></i>Sihati Tadj</a>
 
 <nav class="navbar">
 	<a href="MedcinProfile.php">Account Information</a>

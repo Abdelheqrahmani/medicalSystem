@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" class="rapportDescription" name="rapportDescription[]" maxlength="500">
 
                 <label for="rapportFile">File:</label>
-                <input type="text" class="rapportFile" name="rapportFile[]" required>
+                <input type="file" class="rapportFile" name="rapportFile[]" required>
                 
                 <br>
                 <button type="button" class="btn-delete btn" onclick="removeRapport(this)">Delete</button>

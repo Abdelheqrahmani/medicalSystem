@@ -71,7 +71,7 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <header class="header">
-    <a href="#" class="logo"><i class="fas fa-heartbeat"></i>med system</a>
+    <a href="#" class="logo"><i class="fas fa-heartbeat"></i>Sihati Tadj</a>
     <nav class="navbar">
         <a href="#home">Account Information</a>
         <a href="deconnexion.php"> log out <i class="fas fa-sign-out-alt"></i></a>
@@ -90,7 +90,7 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
         <div class="btn" id="analyses"> Analyses</div>
         <div class="btn" id="rapmed"> Rapport medical </div>
     </div>
-    <table class="styled-table" id="table-ord">
+    <table class="styled-table" id="table-ord" style = ùù>
         <thead>
             <tr>
                 <th>Numero d'ordannance</th>
@@ -114,7 +114,7 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </tbody>
     </table>
-    <table class="styled-table" id="table-anl" style="display: none;">
+    <table class="styled-table" id="table-anl" style="display: none; width : 100%;">
         <thead>
             <tr>
                 <th>Numero des analyses</th>
@@ -138,7 +138,7 @@ $rapports = $rapportQuery->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </tbody>
     </table>
-    <table class="styled-table" id="table-rapp" style="display: none;">
+    <table class="styled-table" id="table-rapp" style="display: none; width : 100%; ">
     <thead>
             <tr>
                 <th>Ordonnance ID</th>

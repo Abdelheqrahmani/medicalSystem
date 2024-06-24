@@ -5,12 +5,13 @@ include("connect.php");
 $sms = 0; 
 
 if (isset($_POST['Entrer'])) {
-    // Sanitizing inputs
+    // Nettoyage des entrées
     $email = str_replace("'", "\'", $_POST['mail']);
     $password = str_replace("'", "\'", $_POST['password']);
     $category = $_POST['categorie'];
 
     if ($category == "medecin") {
+        // Requête pour les médecins
         $query = $bdd->prepare("SELECT * FROM medcin WHERE Email = :email AND Password = :password");
         $query->execute(['email' => $email, 'password' => $password]);
         $row = $query->fetch();
@@ -24,6 +25,7 @@ if (isset($_POST['Entrer'])) {
             exit();
         }
     } elseif ($category == "patient") {
+        // Requête pour les patients
         $query = $bdd->prepare("SELECT * FROM patient WHERE Email = :email AND Password = :password");
         $query->execute(['email' => $email, 'password' => $password]);
         $row = $query->fetch();
@@ -34,6 +36,34 @@ if (isset($_POST['Entrer'])) {
             $_SESSION['categorie'] = $category;
             $_SESSION['id'] = $row['PatientID'];
             header('Location: patientPage.php');
+            exit();
+        }
+    } elseif ($category == "pharmacie") {
+        // Requête pour les pharmacies
+        $query = $bdd->prepare("SELECT * FROM pharmacie WHERE Email = :email AND Password = :password");
+        $query->execute(['email' => $email, 'password' => $password]);
+        $row = $query->fetch();
+
+        if (!$row) {
+            $sms = 1;
+        } else {
+            $_SESSION['categorie'] = $category;
+            $_SESSION['id'] = $row['PharmacieID'];
+            header('Location: pharmaciePage.php');
+            exit();
+        }
+    } elseif ($category == "laboratoire") {
+        // Requête pour les laboratoires
+        $query = $bdd->prepare("SELECT * FROM laboratoire WHERE Email = :email AND Password = :password");
+        $query->execute(['email' => $email, 'password' => $password]);
+        $row = $query->fetch();
+
+        if (!$row) {
+            $sms = 1;
+        } else {
+            $_SESSION['categorie'] = $category;
+            $_SESSION['id'] = $row['LaboratoireID'];
+            header('Location: laboratoirePage.php');
             exit();
         }
     }
@@ -60,21 +90,10 @@ if (isset($_POST['Entrer'])) {
 				  <div class="col-md-7">
 					<div class="card-body" style="text-align:center;">
 					  <div class="site-logo">
-						<figure id="logo">
-							<svg width="100%" height="100%" viewBox="0 0 148 128">
-							  <defs>
-								<mask id="circle-mask">
-								  <rect fill="white" width="100%" height="100%"></rect>
-								  <circle id="logo-mask" fill="black" cx="120" cy="96" r="28"></circle>
-								</mask>
-							  </defs>
-							  <polygon id="logo-hexagon" fill="#00B4FF" points="64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96" mask="url(#circle-mask)"></polygon>
-							  <circle id="logo-circle" fill="#3F3C3C" cx="120" cy="96" r="20"></circle>
-							</svg> 
-						</figure>
+				
 						<div class="site-title">
 							<div id="logo-text" class="site-title-text">
-							  Med<span>care</span>
+							 Sihati <span>Tadj</span>
 							</div>
 						</div>
 					  </div><br/>
@@ -82,10 +101,11 @@ if (isset($_POST['Entrer'])) {
 						<form name='login' action="" method="post" style="margin: 0 auto;">
 						  <div class="form-group">
 							<select name="categorie" class="form-control" required>
-								<option value="">- Categorie -</option>
-								<option value="medecin">Medecin</option>
+								<option value="">- Catégorie -</option>
+								<option value="medecin">Médecin</option>
 								<option value="pharmacie">Pharmacie</option>
 								<option value="patient">Patient</option>
+								<option value="laboratoire">Laboratoire</option>
 							</select>
 						  </div>
 						  <div class="form-group">

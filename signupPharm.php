@@ -2,23 +2,21 @@
 session_start();
 include("connect.php");
 
-if (isset($_POST['add_medcin'])) {
-    // Préparer la requête SQL pour vérifier l'existence d'un médecin avec le même e-mail ou numéro de téléphone
-    $checkQuery = $bdd->prepare("SELECT * FROM medcin WHERE Email = :email OR PhoneNumber = :phone");
+if (isset($_POST['add_pharmacie'])) {
+    // Préparer la requête SQL pour vérifier l'existence d'une pharmacie avec le même e-mail ou numéro de téléphone
+    $checkQuery = $bdd->prepare("SELECT * FROM pharmacie WHERE Email = :email OR PhoneNumber = :phone");
     $checkQuery->execute(['email' => $_POST['email'], 'phone' => $_POST['phone']]);
 
     if ($checkQuery->rowCount() == 0) {
         // Préparer la requête d'insertion
-        $insertQuery = $bdd->prepare("INSERT INTO medcin (Name, Specialty, Location, PhoneNumber, Description, Email, Password) 
-                                      VALUES (:name, :specialty, :location, :phone, :description, :email, :password)");
+        $insertQuery = $bdd->prepare("INSERT INTO pharmacie (Name, Address, PhoneNumber, Email, Password) 
+                                      VALUES (:name, :address, :phone, :email, :password)");
 
         // Exécuter la requête
         $register = $insertQuery->execute([
             'name' => $_POST['name'],
-            'specialty' => $_POST['specialty'],
-            'location' => $_POST['location'],
+            'address' => $_POST['address'],
             'phone' => $_POST['phone'],
-            'description' => $_POST['description'],
             'email' => $_POST['email'],
             'password' => $_POST['password']
         ]);
@@ -40,10 +38,10 @@ if (isset($_POST['add_medcin'])) {
                 });
             </script>";
         } else {
-            echo "Erreur : Impossible d'inscrire le médecin.";
+            echo "Erreur : Impossible d'inscrire la pharmacie.";
         }
     } else {
-        echo "Un médecin avec cet e-mail ou ce numéro de téléphone existe déjà.";
+        echo "Une pharmacie avec cet e-mail ou ce numéro de téléphone existe déjà.";
     }
 }
 ?>
@@ -53,7 +51,7 @@ if (isset($_POST['add_medcin'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enregistrer un Médecin</title>
+    <title>Enregistrer une Pharmacie</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
@@ -67,28 +65,20 @@ if (isset($_POST['add_medcin'])) {
                     </div>
                     <div class="col-md-7" style="display: flex; justify-content: center;">
                         <div class="card-body" style="text-align: center;">
-                            <p class="login-card-description">Enregistrement d'un Médecin</p>
+                            <p class="login-card-description">Enregistrement d'une Pharmacie</p>
 
-                            <form name='add_medcin' action="" method="post" style="margin: 0 auto;">
+                            <form name='add_pharmacie' action="" method="post" style="margin: 0 auto;">
                                 <div class="form-group">
                                     <label for="name">Nom</label>
                                     <input type="text" name="name" class="form-control" placeholder="Nom" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="specialty">Spécialité</label>
-                                    <input type="text" name="specialty" class="form-control" placeholder="Spécialité" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="location">Localisation</label>
-                                    <input type="text" name="location" class="form-control" placeholder="Localisation" required>
+                                    <label for="address">Adresse</label>
+                                    <input type="text" name="address" class="form-control" placeholder="Adresse" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Numéro de Téléphone</label>
                                     <input type="tel" name="phone" class="form-control" placeholder="Numéro de Téléphone" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea name="description" class="form-control" placeholder="Description" required></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -98,12 +88,12 @@ if (isset($_POST['add_medcin'])) {
                                     <label for="password">Mot de passe</label>
                                     <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
                                 </div>
-                                <input name="add_medcin" class="btn btn-block login-btn mb-4" type="submit" value="Enregistrer">
+                                <input name="add_pharmacie" class="btn btn-block login-btn mb-4" type="submit" value="Enregistrer">
 
                                 <div id="popupWindow" class="popup">
                                     <div class="popup-content">
                                         <span id="closeButton" class="close">&times;</span>
-                                        <h2>Médecin enregistré avec succès !</h2>
+                                        <h2>Pharmacie enregistrée avec succès !</h2>
                                         <a class="btn" href="index.html">Aller à la Page d'Accueil</a>
                                         <a class="btn" href="login.php">Aller à la Page de Connexion</a>
                                     </div>
